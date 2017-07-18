@@ -4,9 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class FPSLabel {
+public class FPSLabel implements Disposable{
 
     private final BitmapFont font;
     private long lastTimeCounted;
@@ -31,5 +32,10 @@ public class FPSLabel {
 
     public void render(Batch batch) {
         font.draw(batch, frameRate + " fps", 3, Gdx.graphics.getHeight() - 3);
+    }
+
+    @Override
+    public void dispose() {
+        font.dispose();
     }
 }

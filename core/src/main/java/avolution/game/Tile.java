@@ -6,8 +6,9 @@ import com.badlogic.gdx.graphics.g2d.PolygonRegion;
 import com.badlogic.gdx.graphics.g2d.PolygonSprite;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Disposable;
 
-public class Tile {
+public class Tile implements Disposable {
 
     private Texture texture;
     private int x;
@@ -18,7 +19,7 @@ public class Tile {
         this.x = x;
         this.y = y;
         this.tileSize = tileSize;
-        texture = generateTexture();
+        generateTexture();
     }
 
     void render(PolygonSpriteBatch batch) {
@@ -43,10 +44,18 @@ public class Tile {
         });
     }
 
-    private Texture generateTexture() {
+    private void generateTexture() {
+        if (texture != null) {
+            texture.dispose();
+        }
         Pixmap pixelmap = new Pixmap(1, 1, Pixmap.Format.RGB888);
         pixelmap.setColor(StaticGlobals.RANDOM.nextFloat(), StaticGlobals.RANDOM.nextFloat(), StaticGlobals.RANDOM.nextFloat(), 1);
         pixelmap.fill();
-        return new Texture(pixelmap);
+        texture = new Texture(pixelmap);
+    }
+
+    @Override
+    public void dispose() {
+        texture.dispose();
     }
 }

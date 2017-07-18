@@ -1,13 +1,14 @@
 package avolution.game;
 
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
+import com.badlogic.gdx.utils.Disposable;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import static avolution.game.StaticGlobals.RANDOM;
 
-public class TileMap {
+public class TileMap implements Disposable {
     private static final int MAP_SIZE = 10;
     private static final int TILE_SIZE = 100;
     private List<Tile> tiles = new LinkedList<>();
@@ -35,5 +36,12 @@ public class TileMap {
         int x = RANDOM.nextInt(realSize);
         int y = RANDOM.nextInt(realSize);
         return new Location(x, y);
+    }
+
+    @Override
+    public void dispose() {
+        for (Tile tile : tiles) {
+            tile.dispose();
+        }
     }
 }
