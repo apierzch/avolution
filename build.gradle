@@ -1,0 +1,11 @@
+allprojects {
+    version = '1.0'
+    ext {
+        appName = "Avolution"
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
