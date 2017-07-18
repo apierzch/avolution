@@ -13,7 +13,6 @@ public class TickCalculator {
         return elapsed / TICK_LENGTH;
     }
 
-
     public void update() {
         lastTick = TimeUtils.nanoTime();
     }

@@ -1,4 +1,4 @@
-package avolution.game;
+package avolution.game.world;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.PolygonSprite;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
+
+import static avolution.game.StaticGlobals.RANDOM;
 
 public class Tile implements Disposable {
 
@@ -49,7 +51,7 @@ public class Tile implements Disposable {
             texture.dispose();
         }
         Pixmap pixelmap = new Pixmap(1, 1, Pixmap.Format.RGB888);
-        pixelmap.setColor(StaticGlobals.RANDOM.nextFloat(), StaticGlobals.RANDOM.nextFloat(), StaticGlobals.RANDOM.nextFloat(), 1);
+        pixelmap.setColor(RANDOM.nextFloat(), RANDOM.nextFloat(), RANDOM.nextFloat(), 1);
         pixelmap.fill();
         texture = new Texture(pixelmap);
     }

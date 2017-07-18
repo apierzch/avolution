@@ -1,5 +1,7 @@
 package avolution.game;
 
+import avolution.game.world.Creature;
+import avolution.game.world.TileMap;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -32,8 +34,8 @@ public class Avolution extends ApplicationAdapter {
         long ticks = tickCalculator.countTicks();
 
         for (int i = 0; i < ticks; i++) {
-            creature.update();
             tickCalculator.update();
+            creature.update();
         }
 
         batch.begin();

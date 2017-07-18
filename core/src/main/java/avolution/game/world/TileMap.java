@@ -1,4 +1,4 @@
-package avolution.game;
+package avolution.game.world;
 
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.utils.Disposable;

@@ -1,4 +1,6 @@
-package avolution.game;
+package avolution.game.world;
+
+import avolution.game.StaticGlobals;
 
 public class Location {
     private int x;
