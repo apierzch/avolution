@@ -1,6 +1,5 @@
 package avolution.game;
 
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.PolygonRegion;
 import com.badlogic.gdx.graphics.g2d.PolygonSprite;
@@ -9,33 +8,27 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Tile {
 
-    public static final int SIZE = 100;
     private Texture texture;
     private int x;
     private int y;
+    private int tileSize;
 
-    public Tile(int x, int y) {
+    public Tile(int x, int y, int tileSize) {
         this.x = x;
         this.y = y;
-        texture = randomColorTexture();
-    }
-
-    private Texture randomColorTexture() {
-        Pixmap pixelmap = new Pixmap(1, 1, Pixmap.Format.RGB888);
-        pixelmap.setColor(StaticGlobals.RANDOM.nextFloat(), StaticGlobals.RANDOM.nextFloat(), StaticGlobals.RANDOM.nextFloat(), 1);
-        pixelmap.fill();
-        return new Texture(pixelmap);
+        this.tileSize = tileSize;
+        texture = TextureHelper.randomColorTexture();
     }
 
     void render(PolygonSpriteBatch batch) {
-        int x = this.x * SIZE;
-        int y = this.y * SIZE;
+        int x = this.x * tileSize;
+        int y = this.y * tileSize;
         PolygonRegion region = new PolygonRegion(new TextureRegion(texture),
                 new float[]{
                         x, y,
-                        x + SIZE, y,
-                        x + SIZE, y + SIZE,
-                        x, y + SIZE
+                        x + tileSize, y,
+                        x + tileSize, y + tileSize,
+                        x, y + tileSize
                 }, new short[]{
                 0, 1, 2,
                 0, 2, 3

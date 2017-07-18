@@ -9,12 +9,14 @@ public class Avolution extends ApplicationAdapter {
 	private PolygonSpriteBatch batch;
 	private TileMap map;
 	private FPSLabel fps;
+	private Creature creature;
 
 	@Override
 	public void create () {
 		batch = new PolygonSpriteBatch();
 		fps = new FPSLabel();
 		map = new TileMap();
+		creature = new Creature(map.randomLocation());
 	}
 
 
@@ -29,6 +31,7 @@ public class Avolution extends ApplicationAdapter {
 		batch.begin();
 		fps.render(batch);
 		map.render(batch);
+		creature.render(batch);
 		batch.end();
 	}
 
