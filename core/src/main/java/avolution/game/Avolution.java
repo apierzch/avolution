@@ -10,6 +10,7 @@ public class Avolution extends ApplicationAdapter {
     private TileMap map;
     private FPSLabel fps;
     private Creature creature;
+    private TickCalculator tickCalculator;
 
     @Override
     public void create() {
@@ -17,6 +18,7 @@ public class Avolution extends ApplicationAdapter {
         fps = new FPSLabel();
         map = new TileMap();
         creature = new Creature(map.randomLocation());
+        tickCalculator = new TickCalculator();
     }
 
 
@@ -26,6 +28,13 @@ public class Avolution extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         fps.update();
+
+        long ticks = tickCalculator.countTicks();
+
+        for (int i = 0; i < ticks; i++) {
+            creature.update();
+            tickCalculator.update();
+        }
 
         batch.begin();
         fps.render(batch);

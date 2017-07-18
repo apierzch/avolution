@@ -18,6 +18,10 @@ public class Creature implements Disposable{
         generateTexture();
     }
 
+    public void update() {
+        location = location.move();
+    }
+
     public void render(PolygonSpriteBatch batch) {
         batch.draw(texture, location.x(), location.y());
     }
@@ -32,7 +36,6 @@ public class Creature implements Disposable{
         pixelmap.fillCircle(radius, radius, radius-1);
         texture = new Texture(pixelmap);
     }
-
 
     @Override
     public void dispose() {
