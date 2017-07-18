@@ -27,7 +27,7 @@ public class Tile {
         return new Texture(pixelmap);
     }
 
-    void draw(PolygonSpriteBatch batch) {
+    void render(PolygonSpriteBatch batch) {
         int x = this.x * SIZE;
         int y = this.y * SIZE;
         PolygonRegion region = new PolygonRegion(new TextureRegion(texture),
