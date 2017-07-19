@@ -1,33 +1,27 @@
 package avolution.game.world;
 
-import avolution.game.StaticGlobals;
+import com.badlogic.gdx.math.Vector2;
 
 public class Location {
-    private int x;
-    private int y;
+    private Vector2 location = new Vector2();
 
-    public Location(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Location(float x, float y) {
+        location.set(x, y);
     }
 
-    public int x() {
-        return x;
+    public Location(Vector2 location) {
+        this.location = location;
     }
 
-    public int y() {
-        return y;
+    public float x() {
+        return location.x;
     }
 
-    public Location move() {
-        return new Location(lightlyOff(x), lightlyOff(y));
+    public float y() {
+        return location.y;
     }
 
-    private int lightlyOff(int value) {
-        return value + plusMinus(1);
-    }
-
-    private int plusMinus(int i) {
-        return StaticGlobals.RANDOM.nextInt(i * 2 + 1) - i;
+    public Location move(Vector2 direction) {
+        return new Location(location.cpy().add(direction));
     }
 }

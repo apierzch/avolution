@@ -3,6 +3,7 @@ package avolution.game.world;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
 import static avolution.game.StaticGlobals.RANDOM;
@@ -13,15 +14,17 @@ public class Creature implements Disposable{
     private final int radius;
     private Location location;
     private Texture texture;
+    private Vector2 direction;
 
     public Creature(Location location) {
         this.location = location;
         radius = BASE_RADIUS;
         generateTexture();
+        direction = new Vector2(RANDOM.nextFloat(), RANDOM.nextFloat()).nor();
     }
 
     public void update() {
-        location = location.move();
+        location = location.move(direction);
     }
 
     public void render(PolygonSpriteBatch batch) {
