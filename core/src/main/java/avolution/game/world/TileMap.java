@@ -9,7 +9,7 @@ import java.util.List;
 import static avolution.game.RandomHelper.RANDOM;
 
 public class TileMap implements Disposable {
-    private static final int MAP_SIZE = 10;
+    private static final int MAP_SIZE = 100;
     private static final int TILE_SIZE = 100;
     private List<Tile> tiles = new LinkedList<>();
 

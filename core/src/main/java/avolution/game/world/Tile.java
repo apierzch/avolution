@@ -1,5 +1,6 @@
 package avolution.game.world;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.PolygonRegion;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
 
+import static avolution.game.ColorUtils.HSV_to_RGB;
 import static avolution.game.RandomHelper.RANDOM;
 
 public class Tile implements Disposable {
@@ -16,11 +18,13 @@ public class Tile implements Disposable {
     private int x;
     private int y;
     private int tileSize;
+    private float food;
 
     public Tile(int x, int y, int tileSize) {
         this.x = x;
         this.y = y;
         this.tileSize = tileSize;
+        this.food = RANDOM.nextFloat() * 100;
         generateTexture();
     }
 
@@ -51,9 +55,19 @@ public class Tile implements Disposable {
             texture.dispose();
         }
         Pixmap pixelmap = new Pixmap(1, 1, Pixmap.Format.RGB888);
-        pixelmap.setColor(RANDOM.nextFloat(), RANDOM.nextFloat(), RANDOM.nextFloat(), 1);
+
+        pixelmap.setColor(colorForFood());
         pixelmap.fill();
         texture = new Texture(pixelmap);
+    }
+
+    private Color colorForFood() {
+        float points = (food * 175) / 100;
+        int h = 120;
+        float s = Math.min(points, 100);
+        points -= s;
+        float v = 100 - points;
+        return HSV_to_RGB(h, s, v);
     }
 
     @Override
