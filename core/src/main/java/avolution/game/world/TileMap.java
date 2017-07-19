@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Disposable;
 import java.util.LinkedList;
 import java.util.List;
 
-import static avolution.game.StaticGlobals.RANDOM;
+import static avolution.game.RandomHelper.RANDOM;
 
 public class TileMap implements Disposable {
     private static final int MAP_SIZE = 10;

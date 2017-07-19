@@ -6,9 +6,10 @@ import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
-import static avolution.game.StaticGlobals.RANDOM;
+import static avolution.game.RandomHelper.RANDOM;
+import static avolution.game.RandomHelper.nextIntBetweenIncl;
 
-public class Creature implements Disposable{
+public class Creature implements Disposable {
 
     public static final int BASE_RADIUS = 50;
     private final int radius;
@@ -20,11 +21,20 @@ public class Creature implements Disposable{
         this.location = location;
         radius = BASE_RADIUS;
         generateTexture();
-        direction = new Vector2(RANDOM.nextFloat(), RANDOM.nextFloat()).nor();
+        direction = randomDirection();
     }
 
     public void update() {
+        rotate();
+        move();
+    }
+
+    private void move() {
         location = location.move(direction);
+    }
+
+    private void rotate() {
+        direction.rotate(nextIntBetweenIncl(-10, 10));
     }
 
     public void render(PolygonSpriteBatch batch) {
@@ -38,8 +48,12 @@ public class Creature implements Disposable{
 
         Pixmap pixelmap = new Pixmap(radius * 2, radius * 2, Pixmap.Format.RGBA8888);
         pixelmap.setColor(RANDOM.nextFloat(), RANDOM.nextFloat(), RANDOM.nextFloat(), 1);
-        pixelmap.fillCircle(radius, radius, radius-1);
+        pixelmap.fillCircle(radius, radius, radius - 1);
         texture = new Texture(pixelmap);
+    }
+
+    private Vector2 randomDirection() {
+        return new Vector2(RANDOM.nextFloat(), RANDOM.nextFloat()).nor();
     }
 
     @Override

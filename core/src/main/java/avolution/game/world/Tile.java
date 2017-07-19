@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
 
-import static avolution.game.StaticGlobals.RANDOM;
+import static avolution.game.RandomHelper.RANDOM;
 
 public class Tile implements Disposable {
 
