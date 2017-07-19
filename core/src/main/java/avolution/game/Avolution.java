@@ -52,14 +52,14 @@ public class Avolution extends ApplicationAdapter {
             }
         }
 
-        uiBatch.begin();
-        fps.render(uiBatch);
-        uiBatch.end();
-
         batch.begin();
         map.render(batch);
         creature.render(batch);
         batch.end();
+
+        uiBatch.begin();
+        fps.render(uiBatch);
+        uiBatch.end();
     }
 
     private void handleInput() {
@@ -76,7 +76,7 @@ public class Avolution extends ApplicationAdapter {
         float h = Gdx.graphics.getHeight();
         camera = new OrthographicCamera(30, 30 * (h / w));
         camera.position.set(map.size() / 2, map.size() / 2, 0);
-        camera.zoom = 10;
+        camera.zoom = 50;
     }
 
     @Override

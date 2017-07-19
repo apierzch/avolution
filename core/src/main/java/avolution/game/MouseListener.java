@@ -1,5 +1,6 @@
 package avolution.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
@@ -30,9 +31,17 @@ public class MouseListener extends AbstractMouseListener implements InputProcess
     }
 
     @Override
-    public boolean scrolled(int amount) {
-        camera.zoom += (camera.zoom * 0.1 * amount);
-        System.out.println("zoom: " + camera.zoom);
+    public boolean scrolled(int change) {
+        Vector3 tp = new Vector3();
+        camera.unproject(tp.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+        float px = tp.x;
+        float py = tp.y;
+        camera.zoom += change * camera.zoom * 0.1f;
+        camera.update();
+
+        camera.unproject(tp.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+        camera.position.add(px - tp.x, py - tp.y, 0);
+        camera.update();
         return true;
     }
 }
