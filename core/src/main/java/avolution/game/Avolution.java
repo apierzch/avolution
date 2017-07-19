@@ -4,6 +4,7 @@ import avolution.game.world.Creature;
 import avolution.game.world.TileMap;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 
@@ -13,6 +14,7 @@ public class Avolution extends ApplicationAdapter {
     private FPSLabel fps;
     private Creature creature;
     private TickCalculator tickCalculator;
+    private boolean paused;
 
     @Override
     public void create() {
@@ -28,6 +30,7 @@ public class Avolution extends ApplicationAdapter {
     public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        handleInput();
 
         fps.update();
 
@@ -35,7 +38,9 @@ public class Avolution extends ApplicationAdapter {
 
         for (int i = 0; i < ticks; i++) {
             tickCalculator.update();
-            creature.update();
+            if (!paused) {
+                creature.update();
+            }
         }
 
         batch.begin();
@@ -43,6 +48,12 @@ public class Avolution extends ApplicationAdapter {
         map.render(batch);
         creature.render(batch);
         batch.end();
+    }
+
+    private void handleInput() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            paused = !paused;
+        }
     }
 
     @Override
