@@ -6,23 +6,30 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Avolution extends ApplicationAdapter {
     private PolygonSpriteBatch batch;
+    private SpriteBatch uiBatch;
     private TileMap map;
     private FPSLabel fps;
     private Creature creature;
     private TickCalculator tickCalculator;
     private boolean paused;
+    private OrthographicCamera camera;
 
     @Override
     public void create() {
-        batch = new PolygonSpriteBatch();
-        fps = new FPSLabel();
         map = new TileMap();
+        initCamera();
+        batch = new PolygonSpriteBatch();
+        uiBatch = new SpriteBatch();
+        fps = new FPSLabel();
         creature = new Creature(map.randomLocation());
         tickCalculator = new TickCalculator();
+        Gdx.input.setInputProcessor(new MouseListener(camera));
     }
 
 
@@ -31,6 +38,8 @@ public class Avolution extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         handleInput();
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
 
         fps.update();
 
@@ -43,8 +52,11 @@ public class Avolution extends ApplicationAdapter {
             }
         }
 
+        uiBatch.begin();
+        fps.render(uiBatch);
+        uiBatch.end();
+
         batch.begin();
-        fps.render(batch);
         map.render(batch);
         creature.render(batch);
         batch.end();
@@ -54,11 +66,23 @@ public class Avolution extends ApplicationAdapter {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             paused = !paused;
         }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            Gdx.app.exit();
+        }
+    }
+
+    private void initCamera() {
+        float w = Gdx.graphics.getWidth();
+        float h = Gdx.graphics.getHeight();
+        camera = new OrthographicCamera(30, 30 * (h / w));
+        camera.position.set(map.size() / 2, map.size() / 2, 0);
+        camera.zoom = 10;
     }
 
     @Override
     public void dispose() {
         batch.dispose();
+        uiBatch.dispose();
         creature.dispose();
         map.dispose();
         fps.dispose();

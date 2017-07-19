@@ -32,10 +32,18 @@ public class TileMap implements Disposable {
     }
 
     public Location randomLocation() {
-        int realSize = MAP_SIZE * TILE_SIZE;
+        int realSize = realSize();
         int x = RANDOM.nextInt(realSize);
         int y = RANDOM.nextInt(realSize);
         return new Location(x, y);
+    }
+
+    public float size() {
+        return realSize();
+    }
+
+    private int realSize() {
+        return MAP_SIZE * TILE_SIZE;
     }
 
     @Override
