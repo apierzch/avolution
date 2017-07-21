@@ -1,6 +1,5 @@
 package avolution.game;
 
-import avolution.game.world.Creature;
 import avolution.game.world.TileMap;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -15,7 +14,6 @@ public class Avolution extends ApplicationAdapter {
     private SpriteBatch uiBatch;
     private TileMap map;
     private FPSLabel fps;
-    private Creature creature;
     private TickCalculator tickCalculator;
     private boolean paused;
     private OrthographicCamera camera;
@@ -27,7 +25,6 @@ public class Avolution extends ApplicationAdapter {
         batch = new PolygonSpriteBatch();
         uiBatch = new SpriteBatch();
         fps = new FPSLabel();
-        creature = new Creature(map.randomLocation());
         tickCalculator = new TickCalculator();
         Gdx.input.setInputProcessor(new MouseListener(camera));
     }
@@ -48,13 +45,12 @@ public class Avolution extends ApplicationAdapter {
         for (int i = 0; i < ticks; i++) {
             tickCalculator.update();
             if (!paused) {
-                creature.update();
+                map.update();
             }
         }
 
         batch.begin();
         map.render(batch);
-        creature.render(batch);
         batch.end();
 
         uiBatch.begin();
@@ -83,7 +79,6 @@ public class Avolution extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         uiBatch.dispose();
-        creature.dispose();
         map.dispose();
         fps.dispose();
     }
