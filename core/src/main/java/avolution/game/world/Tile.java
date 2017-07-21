@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
 
 import static avolution.game.ColorUtils.HSV_to_RGB;
-import static avolution.game.RandomHelper.RANDOM;
 
 public class Tile implements Disposable {
 
@@ -18,13 +17,12 @@ public class Tile implements Disposable {
     private int x;
     private int y;
     private int tileSize;
-    private float food;
+    private float food = 0;
 
     public Tile(int x, int y, int tileSize) {
         this.x = x;
         this.y = y;
         this.tileSize = tileSize;
-        this.food = RANDOM.nextFloat() * 100;
         generateTexture();
     }
 
@@ -33,6 +31,14 @@ public class Tile implements Disposable {
         PolygonSprite sprite = new PolygonSprite(polygon);
 
         sprite.draw(batch);
+    }
+
+    public void updateFood(int food) {
+        this.food = food;
+    }
+
+    public int food() {
+        return (int) food;
     }
 
     private PolygonRegion makePolygon() {

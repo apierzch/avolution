@@ -5,14 +5,16 @@ import com.badlogic.gdx.utils.Disposable;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static avolution.game.RandomHelper.RANDOM;
 
 public class TileMap implements Disposable {
-    private static final int MAP_SIZE = 100;
+    private static final int MAP_SIZE = 3;
     private static final int TILE_SIZE = 100;
+    public static final int INITIAL_CREATURES = 10;
     private final List<Creature> creatures = new LinkedList<>();
-    private List<Tile> tiles = new LinkedList<>();
+    private Tile[][] tiles = new Tile[MAP_SIZE][MAP_SIZE];
 
     public TileMap() {
         generateTiles();
@@ -26,17 +28,12 @@ public class TileMap implements Disposable {
     }
 
     public void render(PolygonSpriteBatch batch) {
-        for (Tile tile : tiles) {
-            tile.render(batch);
-        }
-
-        for (Creature creature : creatures) {
-            creature.render(batch);
-        }
+        eachTile(tile -> tile.render(batch));
+        creatures.forEach(creature -> creature.render(batch));
     }
 
     private void generateCreatures() {
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < INITIAL_CREATURES; i++) {
             creatures.add(new Creature(randomLocation()));
         }
     }
@@ -44,9 +41,16 @@ public class TileMap implements Disposable {
     private void generateTiles() {
         for (int x = 0; x < MAP_SIZE; x++) {
             for (int y = 0; y < MAP_SIZE; y++) {
-                tiles.add(new Tile(x, y, TILE_SIZE));
+                tiles[x][y] = new Tile(x, y, TILE_SIZE);
             }
         }
+
+        initFoods();
+    }
+
+    private void initFoods() {
+        DiamondSquareGenerator<Tile> generator = new DiamondSquareGenerator<>(Tile::updateFood, Tile::food);
+        generator.generate(tiles, 100, RANDOM);
     }
 
     private Location randomLocation() {
@@ -66,12 +70,18 @@ public class TileMap implements Disposable {
 
     @Override
     public void dispose() {
-        for (Tile tile : tiles) {
-            tile.dispose();
-        }
+        eachTile(Tile::dispose);
 
         for (Creature creature : creatures) {
             creature.dispose();
+        }
+    }
+
+    private void eachTile(Consumer<Tile> fun) {
+        for (Tile[] rowTiles : tiles) {
+            for (Tile tile : rowTiles) {
+                fun.accept(tile);
+            }
         }
     }
 }

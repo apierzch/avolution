@@ -1,5 +1,6 @@
 package avolution.game.world;
 
+import avolution.game.RandomHelper;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
@@ -7,7 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 
 import static avolution.game.RandomHelper.RANDOM;
-import static avolution.game.RandomHelper.nextIntBetweenIncl;
 
 public class Creature implements Disposable {
 
@@ -34,7 +34,7 @@ public class Creature implements Disposable {
     }
 
     private void rotate() {
-        direction.rotate(nextIntBetweenIncl(-10, 10));
+        direction.rotate(RandomHelper.defaultRandomHelper.nextIntBetweenIncl(-10, 10));
     }
 
     public void render(PolygonSpriteBatch batch) {
