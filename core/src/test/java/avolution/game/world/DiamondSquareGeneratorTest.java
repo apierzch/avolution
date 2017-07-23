@@ -132,8 +132,7 @@ public class DiamondSquareGeneratorTest {
                 {val(9), val(0), val(3)}
         };
         generator = new DiamondSquareGenerator<>(Value::set, Value::get);
-        when(random.nextInt(11))
-                .thenReturn(5);
+        when(random.nextInt(11)).thenReturn(5);
 
         generator.squareStep(1, values, 10, random);
 
@@ -146,31 +145,24 @@ public class DiamondSquareGeneratorTest {
 
     @Test
     public void many_steps() {
-        Value[][] values = new Value[][]{
-                {val(0), val(0), val(0), val(0), val(0)},
-                {val(0), val(0), val(0), val(0), val(0)},
-                {val(0), val(0), val(0), val(0), val(0)},
-                {val(0), val(0), val(0), val(0), val(0)},
-                {val(0), val(0), val(0), val(0), val(0)},
-        };
+        Value[][] values = arrayOf(5, 0);
         generator = new DiamondSquareGenerator<>(Value::set, Value::get);
-        when(random.nextInt(10))
-                .thenReturn(5)
-                .thenReturn(5)
-                .thenReturn(5)
-                .thenReturn(5);
-        when(random.nextInt(11))
-                .thenReturn(5);
+        when(random.nextInt(10)).thenReturn(5);
+        when(random.nextInt(11)).thenReturn(5);
 
         generator.generate(values, 10, random);
 
-        assertThat(values).isEqualTo(new Value[][]{
-                {val(5), val(5), val(5), val(5), val(5)},
-                {val(5), val(5), val(5), val(5), val(5)},
-                {val(5), val(5), val(5), val(5), val(5)},
-                {val(5), val(5), val(5), val(5), val(5)},
-                {val(5), val(5), val(5), val(5), val(5)},
-        });
+        assertThat(values).isEqualTo(arrayOf(5, 5));
+    }
+
+    private Value[][] arrayOf(int size, int initialValue) {
+        Value[][] values = new Value[size][size];
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                values[x][y] = val(initialValue);
+            }
+        }
+        return values;
     }
 
     private Value val(int value) {

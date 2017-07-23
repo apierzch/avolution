@@ -18,6 +18,7 @@ public class Tile implements Disposable {
     private int y;
     private int tileSize;
     private float food = 0;
+    private boolean isWater = false;
 
     public Tile(int x, int y, int tileSize) {
         this.x = x;
@@ -33,12 +34,15 @@ public class Tile implements Disposable {
         sprite.draw(batch);
     }
 
-    public void updateFood(int food) {
+    public void updateFood(float food) {
+        food = Math.min(food, 100);
         this.food = food;
+
+        generateTexture();
     }
 
-    public int food() {
-        return (int) food;
+    public float food() {
+        return food;
     }
 
     private PolygonRegion makePolygon() {
@@ -68,6 +72,9 @@ public class Tile implements Disposable {
     }
 
     private Color colorForFood() {
+        if (isWater) {
+            return Color.BLACK;
+        }
         float points = (food * 175) / 100;
         int h = 120;
         float s = Math.min(points, 100);
@@ -79,5 +86,10 @@ public class Tile implements Disposable {
     @Override
     public void dispose() {
         texture.dispose();
+    }
+
+    public void makeWater() {
+        isWater = true;
+        generateTexture();
     }
 }

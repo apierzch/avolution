@@ -1,11 +1,11 @@
 package avolution.game;
 
+import avolution.game.system.Camera;
 import avolution.game.world.TileMap;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -16,12 +16,12 @@ public class Avolution extends ApplicationAdapter {
     private FPSLabel fps;
     private TickCalculator tickCalculator;
     private boolean paused;
-    private OrthographicCamera camera;
+    private Camera camera;
 
     @Override
     public void create() {
         map = new TileMap();
-        initCamera();
+        camera = new Camera(map);
         batch = new PolygonSpriteBatch();
         uiBatch = new SpriteBatch();
         fps = new FPSLabel();
@@ -36,7 +36,7 @@ public class Avolution extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         handleInput();
         camera.update();
-        batch.setProjectionMatrix(camera.combined);
+        camera.setProjection(batch);
 
         fps.update();
 
@@ -65,14 +65,12 @@ public class Avolution extends ApplicationAdapter {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             Gdx.app.exit();
         }
-    }
-
-    private void initCamera() {
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
-        camera = new OrthographicCamera(30, 30 * (h / w));
-        camera.position.set(map.size() / 2, map.size() / 2, 0);
-        camera.zoom = 50;
+        if (Gdx.input.isKeyPressed(Input.Keys.PLUS)) {
+            camera.zoomIn();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.MINUS)) {
+            camera.zoomOut();
+        }
     }
 
     @Override

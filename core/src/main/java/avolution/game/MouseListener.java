@@ -1,17 +1,16 @@
 package avolution.game;
 
+import avolution.game.system.Camera;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 
 public class MouseListener extends AbstractMouseListener implements InputProcessor {
     public static final float MAGIC_NUMBER = 0.0156f;
-    private OrthographicCamera camera;
+    private Camera camera;
     private Vector3 lastTouch = new Vector3();
 
-
-    public MouseListener(OrthographicCamera camera) {
+    public MouseListener(Camera camera) {
         this.camera = camera;
     }
 
@@ -24,7 +23,7 @@ public class MouseListener extends AbstractMouseListener implements InputProcess
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         Vector3 target = new Vector3();
-        target.set(screenX, screenY, 0).sub(lastTouch).scl(-1, 1, 0).scl(MAGIC_NUMBER * camera.zoom);
+        target.set(screenX, screenY, 0).sub(lastTouch).scl(-1, 1, 0).scl(MAGIC_NUMBER * camera.zoom());
         camera.translate(target);
         lastTouch.set(screenX, screenY, 0);
         return true;
@@ -36,11 +35,15 @@ public class MouseListener extends AbstractMouseListener implements InputProcess
         camera.unproject(tp.set(Gdx.input.getX(), Gdx.input.getY(), 0));
         float px = tp.x;
         float py = tp.y;
-        camera.zoom += change * camera.zoom * 0.1f;
+        if (change > 0) {
+            camera.zoomOut();
+        } else if (change < 0) {
+            camera.zoomIn();
+        }
         camera.update();
 
         camera.unproject(tp.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-        camera.position.add(px - tp.x, py - tp.y, 0);
+        camera.position().add(px - tp.x, py - tp.y, 0);
         camera.update();
         return true;
     }

@@ -28,6 +28,7 @@ public class DiamondSquareGenerator<T> {
         while (size > 2) {
             int length = size / 2;
 
+            generator.reduceRandomValueModifier();
             generator.diamondStep(length);
             generator.squareStep(length);
 
@@ -49,6 +50,7 @@ public class DiamondSquareGenerator<T> {
         private T[][] values;
         private int bound;
         private Random random;
+        private float randomValueModifier = 1.0f;
 
         public SingleRunGenerator(T[][] values, int bound, Random random) {
             this.values = values;
@@ -65,7 +67,6 @@ public class DiamondSquareGenerator<T> {
         }
 
         void diamondStep(int length) {
-            System.out.println(String.format("Diamond (length: %s)", length));
             for (int x = length; x < values.length; x += length * 2) {
                 for (int y = length; y < values.length; y += length * 2) {
                     diamondStepFor(x, y, length);
@@ -74,8 +75,6 @@ public class DiamondSquareGenerator<T> {
         }
 
         void squareStep(int length) {
-            System.out.println(String.format("Square (length: %s)", length));
-
             int yOffset = 0;
             for (int x = 0; x < values.length; x += length) {
                 yOffset = yOffset == 0 ? length : 0;
@@ -83,6 +82,10 @@ public class DiamondSquareGenerator<T> {
                     squareStepFor(x, y, length);
                 }
             }
+        }
+
+        void reduceRandomValueModifier() {
+            randomValueModifier *= 0.9;
         }
 
         private void diamondStepFor(int x, int y, int l) {
@@ -116,13 +119,11 @@ public class DiamondSquareGenerator<T> {
 
         private void setValueFor(int x, int y, List<Integer> factors) {
             int average = (int) factors.stream().mapToInt(Integer::intValue).average().orElseThrow(IllegalArgumentException::new);
-            setValue(x, y, average + modifier());
+            setValue(x, y, (int) (average + (randomValue() * randomValueModifier)));
         }
 
-        private int modifier() {
+        private int randomValue() {
             return RandomHelper.withRandom(random).nextIntBetweenIncl(-(bound / 2), bound / 2);
         }
-
-
     }
 }
